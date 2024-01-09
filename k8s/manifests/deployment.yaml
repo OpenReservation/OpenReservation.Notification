@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+  namespace: default
+  labels:
+    app: notification-service
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: notification-service
+  minReadySeconds: 0
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      containers:        
+        - name: notification-service
+          image: openreservation/notification-service:latest
+          imagePullPolicy: Always
+          env:
+          - name: AppSettings__AuthApiKey
+            valueFrom:
+              secretKeyRef:
+                name: my-secrets
+                key: NotificationAuthApiKey
+          - name: AppSettings__DingBotWebHookUrl
+            valueFrom:
+              secretKeyRef:
+                name: my-secrets
+                key: DingBot_WebHookUrl
+          - name: WeChatCorpApp__AppSecret
+            valueFrom:
+              secretKeyRef:
+                name: my-secrets
+                key: WeChatCorpApp_AppSecret
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+          readinessProbe:
+            httpGet:
+              path: /api/health/ready
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/health/live
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          ports:
+            - containerPort: 8080
