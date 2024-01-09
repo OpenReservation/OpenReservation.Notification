@@ -1,0 +1,2 @@
+# OpenReservation.Notification
+Notification Service
