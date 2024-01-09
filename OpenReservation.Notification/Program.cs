@@ -29,6 +29,10 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication()
     .UseAuthorization();
 
+var healthChecks = app.MapGroup("/api/health");
+healthChecks.MapGet("/live", () => Results.Ok()).ShortCircuit();
+healthChecks.MapGet("/ready", () => Results.Ok()).ShortCircuit();
+
 app.MapPost("/api/notification/{notificationType}", async (NotificationType notificationType, NotificationRequest request, HttpContext context) =>
 {
     var notification = context.RequestServices.GetRequiredKeyedService<INotification>(notificationType);
