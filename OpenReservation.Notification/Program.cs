@@ -16,6 +16,7 @@ builder.Services.AddKeyedSingleton<INotification, WeChatCorpAppNotification>(Not
 
 builder.Services.AddAuthentication()
     .AddApiKey(options => options.ApiKey = builder.Configuration.GetRequiredAppSetting("AuthApiKey"));
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
