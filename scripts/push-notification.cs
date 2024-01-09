@@ -1,8 +1,8 @@
 using System.Net.Http.Json;
 
 var messageTemplate = """
-The service {{env serviceName}} deploy with version {{env imageName}}
-Repo: {{env Build.Repository.Uri}}
+The service {{$env serviceName}} deploy with version {{$env imageName}}
+Repo: {{$env Build.Repository.Uri}}
 [Amazing]
 """;
 var message = await WeihanLi.Common.Template.TemplateEngine.CreateDefault()
