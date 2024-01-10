@@ -21,7 +21,7 @@ public sealed class NotificationRequest
         
         return TimeFormat is null 
             ? $"{Text}\n[{Signature}]" 
-            : $"{Text}\n[{Signature}] {DateTimeOffset.Now.ToString(TimeFormat)}"
+            : $"{Text}\n[{Signature}] {DateTime.UtcNow.AddHours(8).ToString(TimeFormat)}"
             ;
     }
 }
