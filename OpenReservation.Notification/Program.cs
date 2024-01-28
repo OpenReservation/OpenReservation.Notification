@@ -1,4 +1,5 @@
 using OpenReservation.Notification;
+using SendGrid;
 using WeihanLi.Web.Authentication;
 
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -9,10 +10,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddMemoryCache();
+
 builder.Services.AddHttpClient<DingBotNotification>();
 builder.Services.AddKeyedSingleton<INotification, DingBotNotification>(NotificationType.DingBot);
 builder.Services.AddHttpClient<WeChatCorpAppNotification>();
 builder.Services.AddKeyedSingleton<INotification, WeChatCorpAppNotification>(NotificationType.WeChatCorpApp);
+builder.Services.AddSingleton<ISendGridClient>(new SendGridClient(builder.Configuration.GetRequiredAppSetting("SendGridApiKey")));
+builder.Services.AddKeyedSingleton<INotification, SendGridEmailNotification>(NotificationType.Email);
 
 builder.Services.AddAuthentication()
     .AddApiKey(options => options.ApiKey = builder.Configuration.GetRequiredAppSetting("AuthApiKey"));
