@@ -27,6 +27,11 @@ spec:
           image: openreservation/notification-service:latest
           imagePullPolicy: Always
           env:
+          - name: AppSettings__SendGridApiKey
+            valueFrom:
+              secretKeyRef:
+                name: my-secrets
+                key: SendGrid_ApiKey
           - name: AppSettings__AuthApiKey
             valueFrom:
               secretKeyRef:
