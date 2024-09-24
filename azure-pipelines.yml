@@ -29,10 +29,13 @@ steps:
   displayName: 'Use .NET sdk'
   inputs:
     packageType: sdk
-    version: 8.0.x
+    version: 9.0.x
     includePreviewVersions: true
 
-- script: dotnet --info
+- script: |
+    dotnet tool update -g dotnet-execute
+    export PATH="$PATH:$HOME/.dotnet/tools"
+    dotnet-exec info
   displayName: 'dotnet info'
 
 - script: dotnet build -c Release
