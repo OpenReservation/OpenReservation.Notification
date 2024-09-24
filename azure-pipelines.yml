@@ -36,7 +36,7 @@ steps:
     dotnet tool update -g dotnet-execute
     export PATH="$PATH:$HOME/.dotnet/tools"
     dotnet-exec info
-  displayName: 'dotnet info'
+  displayName: 'dotnet-exec info'
 
 - script: dotnet build -c Release
   displayName: 'dotnet build'
@@ -68,8 +68,6 @@ steps:
     arguments: 'image deployment/$(serviceName) $(serviceName)=$(imageName)'
 
 - script: |
-    dotnet tool update -g dotnet-execute
-    export PATH="$PATH:$HOME/.dotnet/tools"
     dotnet-exec "https://github.com/OpenReservation/scripts/blob/main/deploy/azure-pipelines-notification.cs"
   displayName: 'Push notification'  
   env:
