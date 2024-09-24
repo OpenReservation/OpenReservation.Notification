@@ -1,6 +1,7 @@
 using OpenReservation.Notification;
 using SendGrid;
 using WeihanLi.Web.Authentication;
+using WeihanLi.Web.Extensions;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -38,6 +39,7 @@ var healthChecks = app.MapGroup("/api/health");
 healthChecks.MapGet("/live", () => Results.Ok()).ShortCircuit();
 healthChecks.MapGet("/ready", () => Results.Ok()).ShortCircuit();
 
+app.MapRuntimeInfo().ShortCircuit();
 app.MapPost("/api/notification/{notificationType}", async (NotificationType notificationType, NotificationRequest request, HttpContext context) =>
 {
     var notification = context.RequestServices.GetRequiredKeyedService<INotification>(notificationType);
