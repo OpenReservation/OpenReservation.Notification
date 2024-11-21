@@ -6,7 +6,6 @@ using WeihanLi.Web.Extensions;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
-// Add services to the container.
 // OpenApi https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview
 builder.Services.AddOpenApi();
 
@@ -25,7 +24,6 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.MapOpenApi().ShortCircuit().DisableHttpMetrics();
 app.MapScalarApiReference().ShortCircuit().DisableHttpMetrics();
 
