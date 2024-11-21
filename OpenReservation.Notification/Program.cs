@@ -1,4 +1,5 @@
 using OpenReservation.Notification;
+using Scalar.AspNetCore;
 using SendGrid;
 using WeihanLi.Web.Authentication;
 using WeihanLi.Web.Extensions;
@@ -6,9 +7,8 @@ using WeihanLi.Web.Extensions;
 var builder = WebApplication.CreateSlimBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+// OpenApi https://learn.microsoft.com/en-us/aspnet/core/fundamentals/openapi/overview
+builder.Services.AddOpenApi();
 
 builder.Services.AddMemoryCache();
 
@@ -26,20 +26,17 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.MapOpenApi().ShortCircuit().DisableHttpMetrics();
+app.MapScalarApiReference().ShortCircuit().DisableHttpMetrics();
 
 app.UseAuthentication()
     .UseAuthorization();
 
 var healthChecks = app.MapGroup("/api/health");
-healthChecks.MapGet("/live", () => Results.Ok()).ShortCircuit();
-healthChecks.MapGet("/ready", () => Results.Ok()).ShortCircuit();
+healthChecks.MapGet("/live", () => Results.Ok()).ShortCircuit().DisableHttpMetrics();
+healthChecks.MapGet("/ready", () => Results.Ok()).ShortCircuit().DisableHttpMetrics();
 
-app.MapRuntimeInfo().ShortCircuit();
+app.MapRuntimeInfo().ShortCircuit().DisableHttpMetrics();
 app.MapPost("/api/notification/{notificationType}", async (NotificationType notificationType, NotificationRequest request, HttpContext context) =>
 {
     var notification = context.RequestServices.GetRequiredKeyedService<INotification>(notificationType);

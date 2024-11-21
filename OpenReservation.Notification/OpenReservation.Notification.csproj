@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-*" />
-    <PackageReference Include="SendGrid" Version="9.29.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
-    <PackageReference Include="WeihanLi.Common" Version="1.0.70-preview-20240911-003223" />
-    <PackageReference Include="WeihanLi.Web.Extensions" Version="1.11.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+    <PackageReference Include="Scalar.AspNetCore" Version="1.2.42" />
+    <PackageReference Include="SendGrid" Version="9.29.3" />
+    <PackageReference Include="WeihanLi.Common" Version="1.0.72" />
+    <PackageReference Include="WeihanLi.Web.Extensions" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
