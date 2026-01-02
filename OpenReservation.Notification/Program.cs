@@ -30,16 +30,18 @@ app.MapScalarApiReference().ShortCircuit().DisableHttpMetrics();
 app.UseAuthentication()
     .UseAuthorization();
 
-var healthChecks = app.MapGroup("/api/health");
-healthChecks.MapGet("/live", () => Results.Ok()).ShortCircuit().DisableHttpMetrics();
-healthChecks.MapGet("/ready", () => Results.Ok()).ShortCircuit().DisableHttpMetrics();
+var healthChecks = app.MapProbes("/api/health");
+healthChecks.MapGet("/live", () => Results.Ok());
+healthChecks.MapGet("/ready", () => Results.Ok());
 
 app.MapRuntimeInfo().ShortCircuit().DisableHttpMetrics();
+app.MapConfigInspector().DisableHttpMetrics();
+
 app.MapPost("/api/notification/{notificationType}", async (NotificationType notificationType, NotificationRequest request, HttpContext context) =>
 {
     var notification = context.RequestServices.GetRequiredKeyedService<INotification>(notificationType);
     await notification.SendAsync(request);
     return Results.Ok();
-}).WithOpenApi().RequireAuthorization();
+}).RequireAuthorization();
 
 app.Run();
